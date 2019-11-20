@@ -1,2 +1,7 @@
 # Marvin-Java
-A 2020 port of our 2019 Robot.
+A Java version of our team's robot using the code from the 2020 Software Beta.
+
+## Usage
+To fully use this, make sure you have the latest Beta version of the Visual Studio Code extension. 
+
+When the software comes out of beta, we will update this to be compatible.
