@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.Mechanisms;
 import frc.robot.commands.CheesyDrive;
 
 
@@ -44,7 +43,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    //CommandScheduler.getInstance().setDefaultCommand(mDrive, exampleCommand);
+    //CommandScheduler.getInstance().setDefaultCommand(mDrive, mCheesyDrive);
 
     mDrive.setHeading(Rotation2d.identity());
   }
@@ -56,7 +55,6 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //new JoystickButton(m_controller, 5).whenPressed(new Crossbow(mechanisms, 0.8, 1000));
     CheesyDrive.ThrottleInput = () -> mController.getJoystick(XboxController.Side.LEFT, XboxController.Axis.Y);
     CheesyDrive.WheelInput = () -> mController.getJoystick(XboxController.Side.LEFT, XboxController.Axis.Y);
     CheesyDrive.QuickTurnInput = () -> mController.getButton(XboxController.Button.A);
