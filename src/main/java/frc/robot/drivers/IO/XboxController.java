@@ -4,7 +4,7 @@ import frc.robot.Constants.JoystickConstants;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 
-public class XboxController {
+public class XboxController{
     public final Joystick mController;
 
     public enum Side {

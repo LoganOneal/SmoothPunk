@@ -35,7 +35,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Kinematics;
 import frc.robot.RobotState;
-import frc.robot.UserInput;
 
 // Motors
 import frc.robot.drivers.motors.sparkMAX.LazySparkMax;
@@ -64,10 +63,6 @@ import lib.control.PathFollower;
 public class Drive extends SubsystemBase {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-
-  public static UserInput throttleInput;
-  public static UserInput wheelInput;
-  public static UserInput quickTurnInput;
 
   private static LazySparkMax mLeftMaster, mRightMaster, mLeftSlave, mRightSlave;
 
@@ -146,9 +141,6 @@ public class Drive extends SubsystemBase {
 
   public static class PeriodicIO {
       // INPUTS
-      public double throttleInput;
-      public double wheelInput;
-      public boolean quickTurnInput;
       public double timestamp;
       public double left_voltage;
       public double right_voltage;
@@ -172,9 +164,6 @@ public class Drive extends SubsystemBase {
 
   public synchronized void readPeriodicInputs() {
     mPeriodicIO.timestamp = Timer.getFPGATimestamp();
-    mPeriodicIO.throttleInput = throttleInput.getValue();
-    mPeriodicIO.wheelInput = throttleInput.getValue();
-    mPeriodicIO.quickTurnInput = throttleInput.getBoolean();
 
     double prevLeftTicks = mPeriodicIO.left_position_ticks;
     double prevRightTicks = mPeriodicIO.right_position_ticks;
@@ -204,6 +193,31 @@ public class Drive extends SubsystemBase {
         mCSVWriter.add(mPeriodicIO);
     }
   }
+
+  public synchronized void setCheesyishDrive(double throttle, double wheel, boolean quickTurn) {
+    if (Util.epsilonEquals(throttle, 0.0, 0.04)) {
+        throttle = 0.0;
+    }
+
+    if (Util.epsilonEquals(wheel, 0.0, 0.035)) {
+        wheel = 0.0;
+    }
+
+    final double kWheelGain = 0.05;
+    final double kWheelNonlinearity = 0.05;
+    final double denominator = Math.sin(Math.PI / 2.0 * kWheelNonlinearity);
+    // Apply a sin function that's scaled to make it feel better.
+    if (!quickTurn) {
+        wheel = Math.sin(Math.PI / 2.0 * kWheelNonlinearity * wheel);
+        wheel = Math.sin(Math.PI / 2.0 * kWheelNonlinearity * wheel);
+        wheel = wheel / (denominator * denominator) * Math.abs(throttle);
+    }
+
+    wheel *= kWheelGain;
+    DriveSignal signal = Kinematics.inverseKinematics(new Twist2d(throttle, 0.0, wheel));
+    double scaling_factor = Math.max(1.0, Math.max(Math.abs(signal.getLeft()), Math.abs(signal.getRight())));
+    setOpenLoop(new DriveSignal(signal.getLeft() / scaling_factor, signal.getRight() / scaling_factor));
+}
 
   public synchronized void writePeriodicOutputs() {
       if (mDriveControlState == DriveControlState.OPEN_LOOP) {
@@ -322,6 +336,17 @@ public class Drive extends SubsystemBase {
     mPeriodicIO.left_feedforward = feedforward.getLeft();
     mPeriodicIO.right_feedforward = feedforward.getRight();
   }
+
+  public synchronized void setHeading(Rotation2d heading) {
+    System.out.println("set heading: " + heading.getDegrees());
+    
+    // mGyroOffset = heading.rotateBy(Rotation2d.fromDegrees(mPigeon.getFusedHeading()).inverse());
+    mGyroOffset = heading.rotateBy(Rotation2d.fromDegrees(mNavx.getRawYawDegrees()).inverse());
+
+    System.out.println("gyro offset: " + mGyroOffset.getDegrees());
+
+    mPeriodicIO.gyro_heading = heading;
+}
 
   public synchronized void setBrakeMode(boolean shouldEnable) {
     if (mIsBrakeMode != shouldEnable) {

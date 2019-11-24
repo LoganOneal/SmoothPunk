@@ -9,15 +9,18 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.drivers.IO.XboxController;
 
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.Mechanisms;
-
+import lib.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Mechanisms;
+import frc.robot.commands.CheesyDrive;
+
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -32,11 +35,8 @@ public class RobotContainer {
   // Subsystems
   private final Drive mDrive = new Drive();
   
-  /*private RunCommand c_joystick = new RunCommand(
-    () -> drivetrain.driveCartesian(mController.getX() * -1,
-      mController.getY() * -1,
-      mController.getTwist()), drivetrain);
-  */
+  // Commands 
+  private final CheesyDrive mCheesyDrive = new CheesyDrive(mDrive);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -45,6 +45,8 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     //CommandScheduler.getInstance().setDefaultCommand(mDrive, exampleCommand);
+
+    mDrive.setHeading(Rotation2d.identity());
   }
 
   /**
@@ -55,10 +57,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //new JoystickButton(m_controller, 5).whenPressed(new Crossbow(mechanisms, 0.8, 1000));
-    Drive.throttleInput = () -> mController.getRawAxis(ControllerMap.RJOYSTICKX);
-    Drive.wheelInput = () -> (mController.getRawAxis(ControllerMap.RTRIGGER);
-    Drive.quickTurnInput = () -> mController.getRawAxis(ControllerMap.RJOYSTICKX);
-    
+    CheesyDrive.ThrottleInput = () -> mController.getJoystick(XboxController.Side.LEFT, XboxController.Axis.Y);
+    CheesyDrive.WheelInput = () -> mController.getJoystick(XboxController.Side.LEFT, XboxController.Axis.Y);
+    CheesyDrive.QuickTurnInput = () -> mController.getButton(XboxController.Button.A);
   }
 
 
