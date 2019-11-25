@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.GenericHID;
 import frc.robot.drivers.IO.XboxController;
 
 import lib.geometry.Rotation2d;
@@ -39,6 +37,7 @@ public class RobotContainer {
   // Commands 
   private final CheesyDrive mCheesyDrive = new CheesyDrive(mDrive);
 
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -59,7 +58,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //new JoystickButton(m_controller, 5).whenPressed(new Crossbow(mechanisms, 0.8, 1000));
     CheesyDrive.ThrottleInput = () -> mController.getJoystick(XboxController.Side.LEFT, XboxController.Axis.Y);
-    CheesyDrive.WheelInput = () -> mController.getJoystick(XboxController.Side.LEFT, XboxController.Axis.Y);
+    CheesyDrive.WheelInput = () -> mController.getJoystick(XboxController.Side.RIGHT, XboxController.Axis.X);
     CheesyDrive.QuickTurnInput = () -> mController.getButton(XboxController.Button.A);
   }
 

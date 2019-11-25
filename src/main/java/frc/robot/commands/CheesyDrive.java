@@ -45,6 +45,7 @@ public class CheesyDrive extends CommandBase {
 
   @Override
   public void execute(){
+    System.out.println("Throttle: " + ThrottleInput.getValue() + " ,Wheel: " + WheelInput.getValue() + ", Quickturn: " + QuickTurnInput.getValue());
     drive.setCheesyishDrive(ThrottleInput.getValue(), WheelInput.getValue(), QuickTurnInput.getValue());
     drive.readPeriodicInputs();
     drive.onLoop(Timer.getFPGATimestamp());

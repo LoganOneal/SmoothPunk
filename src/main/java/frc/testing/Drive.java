@@ -214,7 +214,6 @@ public class Drive extends SubsystemBase {
         wheel = Math.sin(Math.PI / 2.0 * kWheelNonlinearity * wheel);
         wheel = wheel / (denominator * denominator) * Math.abs(throttle);
     }
-
     wheel *= kWheelGain;
     DriveSignal signal = Kinematics.inverseKinematics(new Twist2d(throttle, 0.0, wheel));
     double scaling_factor = Math.max(1.0, Math.max(Math.abs(signal.getLeft()), Math.abs(signal.getRight())));
@@ -222,8 +221,6 @@ public class Drive extends SubsystemBase {
 }
 
   public synchronized void writePeriodicOutputs() {
-    if (mLeftMaster != null) {
-      System.out.println("Not null");
       if (mDriveControlState == DriveControlState.OPEN_LOOP) {
           mLeftMaster.set(mPeriodicIO.left_demand);
           mRightMaster.set(mPeriodicIO.right_demand);
@@ -231,7 +228,6 @@ public class Drive extends SubsystemBase {
           mLeftMaster.set(mPeriodicIO.left_demand);
           mRightMaster.set(mPeriodicIO.right_demand);
       }
-    }
   }
 
   public void onLoop(double timestamp) {

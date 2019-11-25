@@ -35,7 +35,7 @@ public class XboxController{
         boolean left = side == Side.LEFT;
         boolean y = axis == Axis.Y;
         // multiplies by -1 if y-axis (inverted normally)
-        return handleDeadband((y ? -1 : 1) * mController.getRawAxis((left ? 0 : 4) + (y ? 1 : 0)), deadband);
+        return handleDeadband((y ? -1 : 1) * mController.getRawAxis((left ? 0 : 2) + (y ? 1 : 0)), deadband);
     }
 
     public boolean getTrigger(Side side) {
