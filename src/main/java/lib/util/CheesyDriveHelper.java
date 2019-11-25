@@ -1,6 +1,5 @@
 package lib.util;
 
-import frc.robot.subsystems.Drive;
 
 /**
  * Helper class to implement "Cheesy Drive". "Cheesy Drive" simply means that the "turning" stick controls the curvature

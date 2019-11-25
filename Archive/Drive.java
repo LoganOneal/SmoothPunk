@@ -99,16 +99,16 @@ public class Drive extends SubsystemBase {
 
     mNavx = new NavX(SPI.Port.kMXP);
 
-    mLeftMaster = SparkMaxFactory.createDefaultSparkMax(Constants.kLeftDriveMasterId);
+    LazySparkMax mLeftMaster = SparkMaxFactory.createDefaultSparkMax(Constants.kLeftDriveMasterId);
     configureSpark(mLeftMaster, true, true);
 
-    mLeftSlave = SparkMaxFactory.createPermanentSlaveSparkMax(Constants.kLeftDriveSlaveId, mLeftMaster);
+    LazySparkMax mLeftSlave = SparkMaxFactory.createPermanentSlaveSparkMax(Constants.kLeftDriveSlaveId, mLeftMaster);
     configureSpark(mLeftSlave, true, false);
 
-    mRightMaster = SparkMaxFactory.createDefaultSparkMax(Constants.kRightDriveMasterId);
+    LazySparkMax mRightMaster = SparkMaxFactory.createDefaultSparkMax(Constants.kRightDriveMasterId);
     configureSpark(mRightMaster, false, true);
 
-    mRightSlave = SparkMaxFactory.createPermanentSlaveSparkMax(Constants.kRightDriveSlaveId, mRightMaster);
+    LazySparkMax mRightSlave = SparkMaxFactory.createPermanentSlaveSparkMax(Constants.kRightDriveSlaveId, mRightMaster);
     configureSpark(mRightSlave, false, false);
 
 

@@ -8,9 +8,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.Timer;
+
 import frc.robot.drivers.IO.UserInputDouble;
 import frc.robot.drivers.IO.UserInputBoolean;
-import frc.robot.subsystems.Drive;
+
+//import frc.robot.subsystems.Drive;
+import frc.testing.Drive;
 
 /**
  * Command: CheesyDrive
@@ -42,5 +46,8 @@ public class CheesyDrive extends CommandBase {
   @Override
   public void execute(){
     drive.setCheesyishDrive(ThrottleInput.getValue(), WheelInput.getValue(), QuickTurnInput.getValue());
+    drive.readPeriodicInputs();
+    drive.onLoop(Timer.getFPGATimestamp());
+    drive.writePeriodicOutputs();
   }
 }

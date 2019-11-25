@@ -8,3 +8,6 @@ When the software comes out of beta, we will update this to be compatible.
 
 
 https://docs.wpilib.org/en/latest/docs/software/kinematics-and-odometry/intro-and-chassis-speeds.html
+
+
+https://wpilib.screenstepslive.com/s/currentCS/m/84338/l/1021629-drawing-the-path-the-robot-will-follow

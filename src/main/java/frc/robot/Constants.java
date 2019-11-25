@@ -68,10 +68,10 @@ public final class Constants {
     // https://docs.google.com/spreadsheets/d/1w9V3_tqQ0npdc9U8WPD-6zJkKouunKzHvPXLbHEWwxk/edit#gid=0
 
     // drive
-    public static final int kLeftDriveMasterId = 11;
-    public static final int kLeftDriveSlaveId = 12;
-    public static final int kRightDriveMasterId = 13;
-    public static final int kRightDriveSlaveId = 14;
+    public static final int kLeftDriveMasterId = 0;
+    public static final int kLeftDriveSlaveId = 1;
+    public static final int kRightDriveMasterId = 2;
+    public static final int kRightDriveSlaveId = 3;
 
     public static final int kLeftDriveEncoderA = 0;
     public static final int kLeftDriveEncoderB = 1;

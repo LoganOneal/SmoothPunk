@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package frc.testing;
 
 // Wpilib
 import edu.wpi.first.wpilibj.RobotBase;
@@ -63,7 +63,7 @@ import lib.control.PathFollower;
  * 
  * Robot operates off of a Cartesian coordinate system.
  */
-public class TestDrive extends SubsystemBase {
+public class Drive extends SubsystemBase {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
@@ -95,21 +95,22 @@ public class TestDrive extends SubsystemBase {
     sparkMax.setInverted(!left);
   }
 
-  public TestDrive() {
+  public Drive() {
     mPeriodicIO = new PeriodicIO();
 
     mNavx = new NavX(SPI.Port.kMXP);
      
-    Spark mLeftMaster = new Spark(Constants.kLeftDriveMasterId);
+    mLeftMaster = new Spark(Constants.kLeftDriveMasterId);
     configureSpark(mLeftMaster, true, true);
+    System.out.println("MOTORS DECLARED");
 
-    Spark mLeftSlave = new Spark(Constants.kLeftDriveSlaveId);
+    mLeftSlave = new Spark(Constants.kLeftDriveSlaveId);
     configureSpark(mLeftSlave, true, false);
 
-    Spark mRightMaster = new Spark(Constants.kRightDriveMasterId);
+    mRightMaster = new Spark(Constants.kRightDriveMasterId);
     configureSpark(mRightMaster, false, true);
 
-    Spark mRightSlave = new Spark(Constants.kRightDriveSlaveId);
+    mRightSlave = new Spark(Constants.kRightDriveSlaveId);
     configureSpark(mRightSlave, false, false);
 
 
@@ -221,6 +222,8 @@ public class TestDrive extends SubsystemBase {
 }
 
   public synchronized void writePeriodicOutputs() {
+    if (mLeftMaster != null) {
+      System.out.println("Not null");
       if (mDriveControlState == DriveControlState.OPEN_LOOP) {
           mLeftMaster.set(mPeriodicIO.left_demand);
           mRightMaster.set(mPeriodicIO.right_demand);
@@ -228,10 +231,11 @@ public class TestDrive extends SubsystemBase {
           mLeftMaster.set(mPeriodicIO.left_demand);
           mRightMaster.set(mPeriodicIO.right_demand);
       }
+    }
   }
 
   public void onLoop(double timestamp) {
-    synchronized (TestDrive.this) {
+    synchronized (Drive.this) {
         handleFaults();
         switch (mDriveControlState) {
             case OPEN_LOOP:
@@ -373,10 +377,11 @@ public class TestDrive extends SubsystemBase {
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
+  /*
   @Override
   public void periodic() {
     readPeriodicInputs();
     onLoop(mPeriodicIO.timestamp);
     writePeriodicOutputs();
-  }
+  }*/
 }
