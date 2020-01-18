@@ -31,6 +31,23 @@ public final class Constants {
         public static final int kmRightBack = 4;
     }
 
+    public static final class ShooterConstants {
+        public static final int[] kEncoderPort = {6,7,8};
+        public static final int kShooterPort = 1;
+
+        public static final double kP = 1.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+
+        public static final int kShooterTargetRPS = 4000;
+        public static final int kShooterFreeRPS = 5300;
+        public static final double kSVolts = 0.05;
+        public static final double kVVoltSecondsPerRotation = 12/kShooterFreeRPS;
+        public static final double kShooterToleranceRPS = 50.0;
+        public static final double kEncoderDistancePerPulse = (double) (Math.PI * 6) / 8192;
+
+    }
+
     
     public static final class MotionConstants {
         public static double kEpsilon = 1e-6;
