@@ -54,9 +54,7 @@ public class RosyContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
-    mRunShooter
-    
+  private void configureButtonBindings() {    
     //CheesyDrive.ThrottleInput = () -> mController.getJoystick(XboxController.Side.LEFT, XboxController.Axis.Y);
     //CheesyDrive.WheelInput = () -> mController.getJoystick(XboxController.Side.RIGHT, XboxController.Axis.X);
     //CheesyDrive.QuickTurnInput = () -> mController.getButton(XboxController.Button.A);

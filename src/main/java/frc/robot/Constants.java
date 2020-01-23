@@ -59,7 +59,7 @@ public final class Constants {
     // wheels
     // Tuned 3/26/19
     public static final double kDriveWheelTrackWidthInches = 25.42;
-    public static final double kDriveWheelDiameterInches = 3.938;
+    public static final double kDriveWheelDiameterInches = 6;
     public static final double kDriveWheelRadiusInches = kDriveWheelDiameterInches / 2.0;
     public static final double kDriveWheelTrackRadiusWidthMeters = kDriveWheelTrackWidthInches / 2.0 * 0.0254;
     public static final double kTrackScrubFactor = 1.0469745223;
@@ -90,12 +90,17 @@ public final class Constants {
     public static final int kRightDriveMasterId = 2;
     public static final int kRightDriveSlaveId = 3;
 
+    public static final int kLeftDriveEncoderPWM = 0;
     public static final int kLeftDriveEncoderA = 0;
     public static final int kLeftDriveEncoderB = 1;
-    public static final int kRightDriveEncoderA = 2;
-    public static final int kRightDriveEncoderB = 3;
+    public static final int kLeftDriveEncoderI = 2;
 
-    public static final double kDriveEncoderPPR = 1000.0;
+    public static final int kRightDriveEncoderPWM = 2;
+    public static final int kRightDriveEncoderA = 3;
+    public static final int kRightDriveEncoderB = 4;
+    public static final int kRightDriveEncoderI = 5;
+
+    public static final double kDriveEncoderPPR = 2048.0;
 
     public static final double kMinLookAhead = 12.0; // inches
     public static final double kMinLookAheadSpeed = 12.0; // inches per second

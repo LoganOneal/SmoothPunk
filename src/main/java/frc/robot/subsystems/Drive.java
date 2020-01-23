@@ -30,7 +30,8 @@ import lib.vision.AimingParameters;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import com.ctre.phoenix.sensors.PigeonIMU;  
+import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Kinematics;
@@ -79,8 +80,8 @@ public class Drive extends SubsystemBase {
   private DriveCurrentLimitState mDriveCurrentLimitState;
 
   //Navigation Sensors
-  //private PigeonIMU mPigeon;
-  private NavX mNavx;
+  private PigeonIMU mPigeon;
+  //private NavX mNavx;
 
   // hardware states
   private boolean mIsHighGear;
@@ -97,7 +98,9 @@ public class Drive extends SubsystemBase {
   public Drive() {
     mPeriodicIO = new PeriodicIO();
 
-    mNavx = new NavX(SPI.Port.kMXP);
+    // mNavx = new NavX(SPI.Port.kMXP);
+    mPigeon = new PigeonIMU(5);
+    mPigeon.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_9_SixDeg_YPR, 10, 10);
 
     mLeftMaster = SparkMaxFactory.createDefaultSparkMax(Constants.kLeftDriveMasterId);
     configureSpark(mLeftMaster, true, true);
@@ -112,11 +115,11 @@ public class Drive extends SubsystemBase {
     configureSpark(mRightSlave, false, false);
 
 
-    mLeftEncoder = new Encoder(Constants.kLeftDriveEncoderA, Constants.kLeftDriveEncoderB, false);
-    mRightEncoder = new Encoder(Constants.kRightDriveEncoderA, Constants.kRightDriveEncoderB, true);
+    mLeftEncoder = new Encoder(Constants.kLeftDriveEncoderA, Constants.kLeftDriveEncoderB, Constants.kLeftDriveEncoderI, false);
+    mRightEncoder = new Encoder(Constants.kRightDriveEncoderA, Constants.kRightDriveEncoderB, Constants.kRightDriveEncoderI, true);
 
-    mLeftEncoder.setReverseDirection(true);
-    mRightEncoder.setReverseDirection(false);
+    // mLeftEncoder.setReverseDirection(true);
+    // mRightEncoder.setReverseDirection(false);
 
     mLeftEncoder.setDistancePerPulse(Constants.kDriveWheelDiameterInches * Math.PI / Constants.kDriveEncoderPPR);
     mRightEncoder.setDistancePerPulse(Constants.kDriveWheelDiameterInches * Math.PI / Constants.kDriveEncoderPPR);
@@ -173,8 +176,8 @@ public class Drive extends SubsystemBase {
     mPeriodicIO.left_position_ticks = mLeftEncoder.get();
     mPeriodicIO.right_position_ticks = mRightEncoder.get();
 
-    //mPeriodicIO.gyro_heading = Rotation2d.fromDegrees(mPigeon.getFusedHeading()).rotateBy(mGyroOffset);
-    mPeriodicIO.gyro_heading = Rotation2d.fromDegrees(mNavx.getRawYawDegrees()).rotateBy(mGyroOffset);
+    mPeriodicIO.gyro_heading = Rotation2d.fromDegrees(mPigeon.getFusedHeading()).rotateBy(mGyroOffset);
+    // mPeriodicIO.gyro_heading = Rotation2d.fromDegrees(mNavx.getRawYawDegrees()).rotateBy(mGyroOffset);
 
     double deltaLeftTicks = ((mPeriodicIO.left_position_ticks - prevLeftTicks) / Constants.kDriveEncoderPPR)
             * Math.PI;
@@ -340,8 +343,8 @@ public class Drive extends SubsystemBase {
   public synchronized void setHeading(Rotation2d heading) {
     System.out.println("set heading: " + heading.getDegrees());
     
-    // mGyroOffset = heading.rotateBy(Rotation2d.fromDegrees(mPigeon.getFusedHeading()).inverse());
-    mGyroOffset = heading.rotateBy(Rotation2d.fromDegrees(mNavx.getRawYawDegrees()).inverse());
+    mGyroOffset = heading.rotateBy(Rotation2d.fromDegrees(mPigeon.getFusedHeading()).inverse());
+    // mGyroOffset = heading.rotateBy(Rotation2d.fromDegrees(mNavx.getRawYawDegrees()).inverse());
 
     System.out.println("gyro offset: " + mGyroOffset.getDegrees());
 

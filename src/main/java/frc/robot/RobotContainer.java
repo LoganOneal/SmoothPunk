@@ -45,7 +45,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     //CommandScheduler.getInstance().setDefaultCommand(mDrive, exampleCommand);
-
+    mDrive.setDefaultCommand(mCheesyDrive);
     mDrive.setHeading(Rotation2d.identity());
   }
 
@@ -59,7 +59,7 @@ public class RobotContainer {
     //new JoystickButton(m_controller, 5).whenPressed(new Crossbow(mechanisms, 0.8, 1000));
     CheesyDrive.ThrottleInput = () -> mController.getJoystick(XboxController.Side.LEFT, XboxController.Axis.Y);
     CheesyDrive.WheelInput = () -> mController.getJoystick(XboxController.Side.RIGHT, XboxController.Axis.X);
-    CheesyDrive.QuickTurnInput = () -> mController.getButton(XboxController.Button.A);
+    CheesyDrive.QuickTurnInput = () -> mController.getButton(XboxController.Button.RB);
   }
 
 
