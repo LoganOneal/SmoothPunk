@@ -10,7 +10,8 @@ package frc.robot.subsystems;
 // Wpilib
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -73,15 +74,14 @@ public class Drive extends SubsystemBase {
   private PathFollower mPathFollower;
   private Path mCurrentPath = null;
 
-  private final Solenoid mShifter;
+  // private final DoubleSolenoid mShifter;
 
   // control states
   private DriveControlState mDriveControlState;
   private DriveCurrentLimitState mDriveCurrentLimitState;
 
   //Navigation Sensors
-  private PigeonIMU mPigeon;
-  //private NavX mNavx;
+  private NavX mNavx;
 
   // hardware states
   private boolean mIsHighGear;
@@ -98,9 +98,9 @@ public class Drive extends SubsystemBase {
   public Drive() {
     mPeriodicIO = new PeriodicIO();
 
-    // mNavx = new NavX(SPI.Port.kMXP);
-    mPigeon = new PigeonIMU(5);
-    mPigeon.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_9_SixDeg_YPR, 10, 10);
+    mNavx = new NavX(SPI.Port.kMXP);
+    // mPigeon = new PigeonIMU(5);
+    // mPigeon.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_9_SixDeg_YPR, 10, 10);
 
     mLeftMaster = SparkMaxFactory.createDefaultSparkMax(Constants.kLeftDriveMasterId);
     configureSpark(mLeftMaster, true, true);
@@ -124,7 +124,8 @@ public class Drive extends SubsystemBase {
     mLeftEncoder.setDistancePerPulse(Constants.kDriveWheelDiameterInches * Math.PI / Constants.kDriveEncoderPPR);
     mRightEncoder.setDistancePerPulse(Constants.kDriveWheelDiameterInches * Math.PI / Constants.kDriveEncoderPPR);
 
-    mShifter = new Solenoid(Constants.kPCMId, Constants.kShifterSolenoidId);
+    // mShifter = new DoubleSolenoid(0, 1);
+    // mShifter.set(Value.kOff);
 
     mIsHighGear = false;
     setHighGear(true);
@@ -176,8 +177,8 @@ public class Drive extends SubsystemBase {
     mPeriodicIO.left_position_ticks = mLeftEncoder.get();
     mPeriodicIO.right_position_ticks = mRightEncoder.get();
 
-    mPeriodicIO.gyro_heading = Rotation2d.fromDegrees(mPigeon.getFusedHeading()).rotateBy(mGyroOffset);
-    // mPeriodicIO.gyro_heading = Rotation2d.fromDegrees(mNavx.getRawYawDegrees()).rotateBy(mGyroOffset);
+    // mPeriodicIO.gyro_heading = Rotation2d.fromDegrees(mPigeon.getFusedHeading()).rotateBy(mGyroOffset);
+    mPeriodicIO.gyro_heading = Rotation2d.fromDegrees(mNavx.getRawYawDegrees()).rotateBy(mGyroOffset);
 
     double deltaLeftTicks = ((mPeriodicIO.left_position_ticks - prevLeftTicks) / Constants.kDriveEncoderPPR)
             * Math.PI;
@@ -251,11 +252,16 @@ public class Drive extends SubsystemBase {
   }
 
   public synchronized void setHighGear(boolean wantsHighGear) {
-    if (wantsHighGear != mIsHighGear) {
-        mIsHighGear = wantsHighGear;
-        // Plumbed default high.
-        mShifter.set(!wantsHighGear);
-    }
+    // if (wantsHighGear != mIsHighGear) {
+    //     mIsHighGear = wantsHighGear;
+    //     // Plumbed default high.
+    //     if(wantsHighGear) {
+    //       mShifter.set(Value.kForward);
+    //     } else {
+    //       mShifter.set(Value.kReverse);
+    //     }
+        
+    // }
   }
 
   public synchronized void setOpenLoop(DriveSignal signal) {
@@ -342,9 +348,9 @@ public class Drive extends SubsystemBase {
 
   public synchronized void setHeading(Rotation2d heading) {
     System.out.println("set heading: " + heading.getDegrees());
-    
-    mGyroOffset = heading.rotateBy(Rotation2d.fromDegrees(mPigeon.getFusedHeading()).inverse());
-    // mGyroOffset = heading.rotateBy(Rotation2d.fromDegrees(mNavx.getRawYawDegrees()).inverse());
+
+    //mGyroOffset = heading.rotateBy(Rotation2d.fromDegrees(mPigeon.getFusedHeading()).inverse());
+    mGyroOffset = heading.rotateBy(Rotation2d.fromDegrees(mNavx.getRawYawDegrees()).inverse());
 
     System.out.println("gyro offset: " + mGyroOffset.getDegrees());
 

@@ -1,0 +1,11 @@
+[
+  {
+    "name": "smoothpunk (in project smoothpunk)",
+    "file": "C:\\Users\\User1\\Documents\\Robotics\\2020\\smoothpunk\\build\\libs\\smoothpunk.jar",
+    "extensions": [
+      "C:\\Users\\User1\\Documents\\Robotics\\2020\\smoothpunk\\build\\tmp\\expandedArchives\\halsim_gui-2020.1.1-beta-2-windowsx86-64.zip_94ce3b8b2d6a1e03615a64f6b5fb2a68\\windows\\x86-64\\shared\\halsim_gui.dll"
+    ],
+    "librarydir": "C:\\Users\\User1\\Documents\\Robotics\\2020\\smoothpunk\\build\\tmp\\jniExtractDir",
+    "mainclass": "frc.robot.Main"
+  }
+]
